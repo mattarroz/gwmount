@@ -417,6 +417,7 @@ static struct fftab *fff_init(const char *source, int codepage, int flags) {
 			fftab_del(index);
 			return NULL;
 		}
+// FIXME(mreis): this is probably incorrect
 #ifdef _WIN32
 		if (codepage != 0) {
 			if (f_setcp(codepage) != FR_OK) {
