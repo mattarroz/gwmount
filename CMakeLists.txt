@@ -3,20 +3,19 @@ project(gwmount)
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(FUSE REQUIRED fuse3)
+pkg_check_modules(LIBSAFEC REQUIRED libsafec)
+add_definitions(-DHAVE_LIBSAFEC)
+
 add_library(fatfs
         fatfs/source/ff.c
         fatfs/source/ffsystem.c
         fatfs/source/ffunicode.c
 )
 target_include_directories(fatfs PUBLIC fatfs/source)
-target_compile_definitions(fatfs PUBLIC )
 
-
-find_package(PkgConfig REQUIRED)
-
-pkg_check_modules(FUSE REQUIRED fuse3)
-pkg_check_modules(LIBSAFEC REQUIRED libsafec)
-add_definitions(-DHAVE_LIBSAFEC)
 add_library(diskflashback
         DiskFlashback/floppybridge_abstract.h
         DiskFlashback/floppybridge_common.h
