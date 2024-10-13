@@ -1,10 +1,14 @@
 
 #pragma region FATFS
 
+#include "readwrite_floppybridge.h"
 #include "sectorCache.h"
+#include "include/mount_drive.h"
 
 #include <diskio.h>
 #include <safe_lib.h>
+
+
 
 // I hate this being here
 static SectorCacheEngine* fatfsSectorCache = nullptr;
@@ -87,4 +91,21 @@ uint32_t get_fattime(void) {
   time_t t = time(0);
   localtime_s(& t, &stm);
   return (uint32_t)(stm.tm_year - 80) << 25 | (uint32_t)(stm.tm_mon + 1) << 21 | (uint32_t)stm.tm_mday << 16 | (uint32_t)stm.tm_hour << 11 | (uint32_t)stm.tm_min << 5 | (uint32_t)stm.tm_sec >> 1;
+}
+
+// Start a drive mount
+int mount_drive (const char *floppyProfile) {
+
+  auto* b = new SectorRW_FloppyBridge(floppyProfile, [](bool diskInserted, SectorType diskFormat) {
+    // push this in the main thread incase its not!
+    //    triggerRemount();
+  });
+
+  if (!b->available()) {
+    delete b;
+    return false;
+  }
+
+  setFatFSSectorCache(b);
+  return true;
 }

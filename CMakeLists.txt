@@ -16,24 +16,27 @@ add_library(fatfs
 )
 target_include_directories(fatfs PUBLIC fatfs/source)
 
-add_library(diskflashback
+add_library(diskflashback SHARED
+        DiskFlashback/amiga_sectors.cpp
         DiskFlashback/floppybridge_abstract.h
         DiskFlashback/floppybridge_common.h
         DiskFlashback/floppybridge_lib.cpp
         DiskFlashback/floppybridge_lib.h
+        DiskFlashback/ibm_sectors.cpp
         DiskFlashback/MountedVolumes.cpp
         DiskFlashback/MountedVolumes.h
+        DiskFlashback/mfminterface.cpp
         DiskFlashback/readwrite_floppybridge.cpp
         DiskFlashback/readwrite_floppybridge.h
         DiskFlashback/sectorCache.cpp
         DiskFlashback/sectorCache.h
         DiskFlashback/sectorCommon.h
 )
-target_include_directories(diskflashback PRIVATE DiskFlashback ${LIBSAFEC_INCLUDE_DIRS})
+target_include_directories(diskflashback PRIVATE DiskFlashback ${LIBSAFEC_INCLUDE_DIRS} PUBLIC DiskFlashback/include)
 target_link_directories(diskflashback PUBLIC ${LIBSAFEC_LIBRARY_DIRS})
 target_link_libraries(diskflashback PUBLIC fatfs ${LIBSAFEC_LIBRARIES})
 
-add_library(floppybridge
+add_library(floppybridge SHARED
         floppybridge/ArduinoFloppyBridge.cpp
         floppybridge/ArduinoInterface.cpp
         floppybridge/CommonBridgeTemplate.cpp
@@ -54,7 +57,7 @@ add_executable(gwmount
         fusefatfs/fftable.h
         fusefatfs/fusefatfs.c
 )
-target_link_libraries(gwmount fatfs diskflashback ${FUSE_LIBRARIES})
+target_link_libraries(gwmount fatfs diskflashback floppybridge ${FUSE_LIBRARIES})
 target_link_directories(gwmount PRIVATE ${FUSE_LIBRARY_DIRS})
 target_include_directories(gwmount PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/fusefatfs)
 target_compile_definitions(gwmount PRIVATE -D_FILE_OFFSET_BITS=64)

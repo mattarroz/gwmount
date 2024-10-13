@@ -18,6 +18,12 @@
 
 #define FUSE_USE_VERSION 29
 
+#include <ff.h>
+#include "fftable.h"
+#include <config.h>
+
+#include <mount_drive.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,9 +33,6 @@
 #include <stddef.h>
 #include <pthread.h>
 
-#include <ff.h>
-#include "fftable.h"
-#include <config.h>
 
 int fuse_reentrant_tag = 0;
 
@@ -412,6 +415,7 @@ static struct fftab *fff_init(const char *source, int codepage, int flags) {
 		struct fftab *ffentry = fftab_get(index);
 		char sdrv[12];
 		snprintf(sdrv, 12, "%d:", index);
+		mount_drive("Greaseweazle");
 		FRESULT fres = f_mount(&ffentry->fs, sdrv, 1);
 		if (fres != FR_OK) {
 			fftab_del(index);

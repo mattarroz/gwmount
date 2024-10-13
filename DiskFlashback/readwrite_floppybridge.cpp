@@ -53,6 +53,23 @@ void SectorRW_FloppyBridge::releaseDrive() {
     SectorCacheMFM::releaseDrive();
 }
 
+//
+//bool SectorRW_FloppyBridge::diskRemovedWarning() {
+//  if (m_bridge->isDiskInDrive()) return true;
+//
+//  uint64_t t = GetTickCount64() - 1000;
+//  while (!m_bridge->isDiskInDrive()) {
+//    if (GetTickCount64() - t > 1000) {
+//      fprintf(stderr, "WARNING: Not all data has been written to disk!\nYou MUST re-insert the disk into drive and press 'r' for retry.");
+//      char c = getchar();
+//      if (c != 'r')
+//	return false;
+//      t = GetTickCount64();
+//    }
+//    else Sleep(100);
+//  }
+//  return true;
+//}
 bool SectorRW_FloppyBridge::restoreDrive() {
     if (!m_bridge) return false;
 

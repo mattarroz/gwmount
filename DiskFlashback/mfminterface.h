@@ -37,7 +37,7 @@ private:
     uint64_t m_motorTurnOnTime     = 0;
     void* m_mfmBuffer               = nullptr;
     bool m_ignoreErrors             = false;   // should get reset when motor goes off
-    void* m_timerQueue;
+    std::vector<timer_t> m_timerQueue;
     void* m_timer                  = 0;
     bool m_blockWriting             = false;  // used if errors occur
     bool m_diskInDrive              = false;  // Monitor for disk change
