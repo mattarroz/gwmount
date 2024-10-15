@@ -416,9 +416,20 @@ static struct fftab *fff_init (int codepage, int flags)
 		struct fftab *ffentry = fftab_get(index);
 		char sdrv[12];
 		snprintf(sdrv, 12, "%d:", index);
-		mount_drive("Greaseweazle");
 		FRESULT fres = f_mount(&ffentry->fs, sdrv, 1);
-		if (fres != FR_OK) {
+		//
+		/*
+		 * autoCache = (i & 1) != 0; -> 0
+                 * driveCable = (FloppyBridge::DriveSelection)(((i & 2)>>1) | ((i & 48) >> 3));
+                 * autoDetectComPort = (i & 4) != 0;
+                 * smartSpeed = (i & 8) != 0;
+		 */
+		uint8_t drive_mask = 0b00010000; // Drive 0 is selected -> 2
+		char floppy_profile[255];
+		snprintf (floppy_profile, 254, "[1|%d|/dev/ttyACM0|0|0]", drive_mask);
+		int mount_drive_res = mount_drive(floppy_profile);
+
+		if (fres != FR_OK || mount_drive_res < 0) {
 			fftab_del(index);
 			return NULL;
 		}
@@ -473,7 +484,7 @@ static const struct fuse_operations fusefat_ops = {
 static void usage(void)
 {
 	fprintf(stderr,
-			"usage: " PROGNAME " image mountpoint [options]\n"
+			"usage: " PROGNAME " mountpoint [options]\n"
 			"\n"
 			"general options:\n"
 			"    -o opt,[opt...]    mount options\n"
@@ -492,7 +503,6 @@ static void usage(void)
 }
 
 struct options {
-	const char *source;
 	const char *mountpoint;
 	int ro;
 	int rw;
