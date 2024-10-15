@@ -102,6 +102,7 @@ int mount_drive (const char *floppyProfile) {
   });
 
   if (!b->available()) {
+    fprintf(stderr, "Floppy Bridge not available. This likely means the drive is not connected.\n");
     delete b;
     return -1;
   }
