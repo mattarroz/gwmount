@@ -24,23 +24,22 @@
 
 static struct fftab *fftab[FF_VOLUMES];
 
-int fftab_new(const char *path, int flags) {
+int fftab_new (int flags)
+{
 	int index;
 	struct fftab *new;
-	size_t pathlen = strlen(path) + 1;
 	for (index = 0; index < FF_VOLUMES; index++)
 		if (fftab[index] == NULL)
 			break;
 	if (index >= FF_VOLUMES)
 		return -1;
-	new = malloc(sizeof(struct fftab) + pathlen);
+	new = malloc(sizeof(struct fftab));
 	if (new == NULL)
 		return -1;
 	new->fd = -1;
 	new->index = index;
 	new->flags = flags;
 	memset(&new->fs, 0, sizeof(new->fs));
-	snprintf(new->path, pathlen, "%s", path);
 	fftab[index] = new;
 	return index;
 }

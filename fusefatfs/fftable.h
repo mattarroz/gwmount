@@ -9,10 +9,9 @@ struct fftab {
 	int index;
 	int flags;
 	FATFS fs;
-	char path[];
 };
 
-int fftab_new(const char *path, int flags);
+int fftab_new (int flags);
 void fftab_del(int index);
 struct fftab *fftab_get(int index);
 

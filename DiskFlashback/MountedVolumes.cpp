@@ -103,9 +103,9 @@ int mount_drive (const char *floppyProfile) {
 
   if (!b->available()) {
     delete b;
-    return false;
+    return -1;
   }
 
   setFatFSSectorCache(b);
-  return true;
+  return 0;
 }
