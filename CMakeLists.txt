@@ -16,7 +16,7 @@ add_library(fatfs
 )
 target_include_directories(fatfs PUBLIC fatfs/source)
 
-add_library(diskflashback SHARED
+add_library(diskflashback
         DiskFlashback/amiga_sectors.cpp
         DiskFlashback/floppybridge_abstract.h
         DiskFlashback/floppybridge_common.h
@@ -48,6 +48,7 @@ add_library(floppybridge SHARED
         floppybridge/SerialIO.cpp
         floppybridge/SuperCardProBridge.cpp
         floppybridge/SuperCardProInterface.cpp
+        floppybridge/FloppyBridge.cpp
 )
 target_include_directories(floppybridge PRIVATE floppybridge)
 
