@@ -90,12 +90,12 @@ private:
     // init the drive
     bool initDrive();
 protected:
-    virtual bool internalReadData(const uint32_t sectorNumber, const uint32_t sectorSize, void* data) override final;
-    virtual bool internalWriteData(const uint32_t sectorNumber, const uint32_t sectorSize, const void* data) override final;
-    virtual bool internalHybridReadData(const uint32_t sectorNumber, const uint32_t sectorSize, void* data) override final;
+    bool internalReadData(const uint32_t sectorNumber, const uint32_t sectorSize, void* data) final;
+    bool internalWriteData(const uint32_t sectorNumber, const uint32_t sectorSize, const void* data) final;
+    bool internalHybridReadData(const uint32_t sectorNumber, const uint32_t sectorSize, void* data) final;
 
     virtual bool restoreDrive() = 0;
-    virtual void releaseDrive() = 0;
+    virtual void releaseDrive();
     virtual bool isDiskInDrive() = 0;
     virtual bool isDriveWriteProtected() = 0;
     virtual bool motorEnable(bool enable, bool upperSide) = 0;
